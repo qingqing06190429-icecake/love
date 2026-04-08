@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>文章详情</title>
+    <meta
+      name="description"
+      content="青花酒同人站中的文章详情页，用于阅读单篇公开文章与浏览同原作其他文章。"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero hero-detail">
+        <div class="hero-main">
+          <a class="back-link" href="/">返回论坛首页</a>
+          <p class="eyebrow">QING / STORY DETAIL</p>
+          <div class="topic-strip">
+            <span id="detail-board" class="thread-board">CP</span>
+            <span id="detail-category" class="thread-category">原作</span>
+          </div>
+          <div id="detail-tags" class="tag-list detail-tags"></div>
+          <h1 id="detail-title">正在读取文章...</h1>
+          <p id="detail-meta" class="hero-copy">请稍候，正在载入这篇文章。</p>
+        </div>
+      </header>
+
+      <main class="detail-layout">
+        <article class="panel article-detail-panel">
+          <div class="panel-head">
+            <h2>正文</h2>
+            <p id="detail-excerpt">正在整理文章摘要...</p>
+          </div>
+          <div id="detail-content" class="detail-content"></div>
+        </article>
+
+        <aside class="panel detail-sidebar">
+          <div class="panel-head">
+            <h2>同 CP 其他文章</h2>
+            <p id="related-summary">正在读取推荐内容...</p>
+          </div>
+          <div id="related-list" class="related-list"></div>
+        </aside>
+      </main>
+    </div>
+
+    <template id="related-item-template">
+      <a class="related-item" href="#">
+        <span class="related-item-category"></span>
+        <strong class="related-item-title"></strong>
+        <span class="related-item-meta"></span>
+      </a>
+    </template>
+
+    <script type="module" src="/article.js"></script>
+  </body>
+</html>

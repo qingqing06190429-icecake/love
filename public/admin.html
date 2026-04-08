@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>青花酒后台</title>
+    <meta
+      name="description"
+      content="青花酒同人站后台，用于登录、创建文章、编辑文章、删除文章，并填写原作、CP和标签。"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero hero-admin">
+        <div class="hero-main">
+          <p class="eyebrow">QING / ADMIN DESK</p>
+          <h1>在后台整理文章，再写清楚它属于哪个原作和哪对 CP。</h1>
+          <p class="hero-copy">
+            访客只能看到你已经公开的文章。你可以在这里写文、编辑、删除，并为每篇文填写原作、CP 配对和 tag。
+          </p>
+        </div>
+      </header>
+
+      <main class="admin-layout">
+        <section id="login-panel" class="panel admin-login">
+          <div class="panel-head">
+            <h2>管理员登录</h2>
+            <p>输入后台密码后才可以进入文章管理区。</p>
+          </div>
+
+          <form id="login-form" class="stack-form">
+            <label class="field">
+              <span>后台密码</span>
+              <input
+                id="password-input"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                placeholder="请输入管理员密码"
+              />
+            </label>
+            <button id="login-button" type="submit">进入后台</button>
+            <p id="login-status" class="status-message" aria-live="polite"></p>
+            <p id="password-hint" class="inline-note" hidden>
+              当前服务正在使用默认密码 `change-this-password`，上线前请改成自己的 `ADMIN_PASSWORD`。
+            </p>
+          </form>
+        </section>
+
+        <section id="dashboard-panel" class="admin-workbench" hidden>
+          <div class="admin-dashboard">
+            <section class="panel admin-composer">
+              <div class="panel-head">
+                <h2 id="composer-title">发布新文章</h2>
+                <p id="composer-copy">可以直接写文，也可以先导入 txt 文件，再填写原作、CP 和 tag。</p>
+              </div>
+
+              <form id="article-form" class="stack-form">
+                <label class="field">
+                  <span>文章标题</span>
+                  <input
+                    id="title-input"
+                    name="title"
+                    type="text"
+                    maxlength="100"
+                    placeholder="例如：春天备忘录、观影随笔、设计摘记"
+                  />
+                </label>
+
+                <div class="field-grid field-grid-3">
+                  <label class="field">
+                    <span>原作分类</span>
+                    <input
+                      id="fandom-input"
+                      name="fandom"
+                      type="text"
+                      maxlength="40"
+                      placeholder="例如：文豪野犬、原神、咒术回战"
+                    />
+                  </label>
+
+                  <label class="field">
+                    <span>CP 配对</span>
+                    <input
+                      id="cp-input"
+                      name="cp"
+                      type="text"
+                      maxlength="48"
+                      placeholder="例如：太中、五夏、枫散"
+                    />
+                  </label>
+
+                  <label class="field">
+                    <span>导入 txt 文件</span>
+                    <input id="file-input" name="file" type="file" accept=".txt,text/plain" />
+                  </label>
+                </div>
+
+                <label class="field">
+                  <span>tag</span>
+                  <input
+                    id="tags-input"
+                    name="tags"
+                    type="text"
+                    maxlength="200"
+                    placeholder="多个 tag 请用逗号分开，例如：失忆梗，双向暗恋，HE"
+                  />
+                </label>
+
+                <label class="field">
+                  <span>摘要</span>
+                  <textarea
+                    id="excerpt-input"
+                    name="excerpt"
+                    rows="3"
+                    maxlength="220"
+                    placeholder="摘要会显示在文章列表和详情页导语中；不填则自动截取正文前一段。"
+                  ></textarea>
+                </label>
+
+                <label class="field">
+                  <span>正文</span>
+                  <textarea
+                    id="content-input"
+                    name="content"
+                    rows="15"
+                    maxlength="100000"
+                    placeholder="写下你的文章正文，或者从本地导入 txt 文件。"
+                  ></textarea>
+                </label>
+
+                <div class="form-foot">
+                  <label class="checkbox">
+                    <input id="published-input" name="published" type="checkbox" checked />
+                    <span>保存后立即公开</span>
+                  </label>
+                  <div class="meta">
+                    <span id="char-count">0 字</span>
+                    <span id="source-label">来源：后台手动创建</span>
+                  </div>
+                </div>
+
+                <div class="action-row">
+                  <button id="submit-button" type="submit">保存文章</button>
+                  <button id="cancel-edit-button" class="secondary-button" type="button" hidden>
+                    取消编辑
+                  </button>
+                  <button id="logout-button" class="secondary-button" type="button">退出后台</button>
+                </div>
+
+                <p id="article-status" class="status-message" aria-live="polite"></p>
+              </form>
+            </section>
+
+            <section class="panel admin-library">
+              <div class="panel-head">
+                <h2>文章管理</h2>
+                <p id="library-summary">正在读取文章列表...</p>
+              </div>
+              <div id="admin-articles-list" class="articles-list"></div>
+            </section>
+          </div>
+
+          <section class="panel progress-manager">
+            <div class="panel-head">
+              <h2>日度码字</h2>
+              <p id="progress-summary">正在读取日度码字记录...</p>
+            </div>
+
+            <form id="progress-form" class="stack-form progress-form">
+              <div class="field-grid progress-grid">
+                <label class="field">
+                  <span>日期</span>
+                  <input id="progress-date-input" name="date" type="date" />
+                </label>
+
+                <label class="field">
+                  <span>字数</span>
+                  <input
+                    id="progress-words-input"
+                    name="words"
+                    type="number"
+                    min="0"
+                    step="1"
+                    placeholder="例如：3200"
+                  />
+                </label>
+              </div>
+
+              <div class="action-row">
+                <button id="progress-submit-button" type="submit">保存码字记录</button>
+                <button id="progress-cancel-button" class="secondary-button" type="button" hidden>
+                  取消编辑
+                </button>
+              </div>
+
+              <p id="progress-status" class="status-message" aria-live="polite"></p>
+            </form>
+
+            <div id="progress-list" class="progress-list"></div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <template id="admin-article-template">
+      <article class="article-card article-card-admin">
+        <div class="article-card-top">
+          <div>
+            <div class="admin-meta-row">
+              <span class="thread-board"></span>
+              <span class="thread-category"></span>
+              <span class="status-chip"></span>
+            </div>
+            <h3 class="article-title"></h3>
+            <p class="article-meta"></p>
+          </div>
+          <button class="article-toggle" type="button">展开正文</button>
+        </div>
+        <p class="article-excerpt"></p>
+        <div class="tag-list admin-tag-list"></div>
+        <pre class="article-content" hidden></pre>
+        <div class="card-actions">
+          <a class="action-link detail-link" href="#">查看详情</a>
+          <button class="secondary-button edit-button" type="button">编辑</button>
+          <button class="publish-toggle" type="button"></button>
+          <button class="danger-button delete-button" type="button">删除</button>
+        </div>
+      </article>
+    </template>
+
+    <template id="progress-item-template">
+      <article class="progress-item">
+        <div class="progress-item-main">
+          <strong class="progress-date"></strong>
+          <p class="progress-meta"></p>
+        </div>
+        <span class="progress-words"></span>
+        <div class="progress-actions">
+          <button class="secondary-button progress-edit-button" type="button">编辑</button>
+          <button class="danger-button progress-delete-button" type="button">删除</button>
+        </div>
+      </article>
+    </template>
+
+    <script type="module" src="/admin.js"></script>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+[Unit]
+Description=Qing Fanfiction Site
+After=network.target
+
+[Service]
+Type=simple
+User=love
+Group=love
+WorkingDirectory=/srv/love
+EnvironmentFile=/etc/love/love.env
+ExecStart=/usr/bin/node /srv/love/server.js
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

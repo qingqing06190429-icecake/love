@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>青花酒</title>
+    <meta
+      name="description"
+      content="一个专门发布同人文的个人站点，支持原作分类、CP配对、tag整理与单篇详情页。"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero hero-public">
+        <div class="hero-main">
+          <p class="eyebrow">QING / PERSONAL WRITING FORUM</p>
+          <h1>青花酒</h1>
+          <p class="hero-copy">欢迎来到我的春天，这里只有爱与我。</p>
+          <div class="hero-actions">
+            <a class="hero-link" href="#forum-feed">开始阅读</a>
+          </div>
+        </div>
+
+        <aside class="hero-stats panel panel-compact">
+          <h2>论坛概览</h2>
+          <div class="stat-grid">
+            <div>
+              <span class="stat-number" id="article-count">0</span>
+              <span class="stat-label">公开文章</span>
+            </div>
+            <div>
+              <span class="stat-number" id="board-count">0</span>
+              <span class="stat-label">CP 分类</span>
+            </div>
+            <div>
+              <span class="stat-number" id="category-count">0</span>
+              <span class="stat-label">常用 tag</span>
+            </div>
+          </div>
+          <p class="stat-note">这里是一个只展示公开内容的同人站，你只能看到我已经发布的文。</p>
+        </aside>
+      </header>
+
+      <section class="panel board-hall">
+        <div class="panel-head">
+          <h2>CP 分类</h2>
+          <p id="board-summary">正在整理公开分类...</p>
+        </div>
+        <div id="board-grid" class="board-grid"></div>
+      </section>
+
+      <section class="panel recent-updates-panel">
+        <div class="panel-head">
+          <h2>最近更新</h2>
+          <p id="recent-summary">正在整理最近更新的文章...</p>
+        </div>
+        <div id="recent-updates-list" class="recent-updates-list"></div>
+      </section>
+
+      <section class="panel writing-progress-panel">
+        <div class="panel-head">
+          <h2>每日码字</h2>
+          <p id="writing-summary">正在读取公开码字记录...</p>
+        </div>
+        <div id="writing-progress-list" class="writing-progress-list"></div>
+      </section>
+
+      <section class="panel search-panel">
+        <div class="panel-head">
+          <h2>文章搜索</h2>
+          <p id="search-summary">支持搜索文章名字或 tag。</p>
+        </div>
+        <form id="search-form" class="search-form">
+          <label class="search-field" for="search-input">
+            <span class="visually-hidden">搜索文章</span>
+            <input
+              id="search-input"
+              name="q"
+              type="search"
+              maxlength="80"
+              placeholder="输入文章名字或 tag"
+            />
+          </label>
+          <button id="search-button" type="submit">搜索</button>
+          <button id="clear-search-button" class="secondary-button" type="button" hidden>
+            清空
+          </button>
+        </form>
+      </section>
+
+      <main class="forum-layout" id="forum-feed">
+        <aside class="panel panel-compact sidebar">
+          <div class="panel-head">
+            <h2>CP 筛选</h2>
+            <p>按 CP 查看我的公开同人文。</p>
+          </div>
+          <div id="board-filter-list" class="filter-list"></div>
+        </aside>
+
+        <section class="panel forum-feed">
+          <div class="panel-head">
+            <h2>文章列表</h2>
+            <p id="feed-summary">正在读取公开文章...</p>
+          </div>
+          <div id="board-sections" class="board-sections"></div>
+        </section>
+      </main>
+    </div>
+
+    <template id="board-card-template">
+      <button class="board-card" type="button">
+        <div class="board-card-top">
+          <h3 class="board-card-title"></h3>
+          <span class="board-card-count"></span>
+        </div>
+        <p class="board-card-meta"></p>
+        <p class="board-card-latest"></p>
+      </button>
+    </template>
+
+    <template id="board-filter-template">
+      <button class="board-filter" type="button"></button>
+    </template>
+
+    <template id="thread-row-template">
+      <article class="thread-row">
+        <div class="thread-main">
+          <div class="thread-badges">
+            <span class="thread-board"></span>
+            <span class="thread-category"></span>
+          </div>
+          <a class="thread-title-link" href="#"></a>
+          <p class="thread-excerpt"></p>
+          <div class="tag-list thread-tags"></div>
+        </div>
+        <div class="thread-side">
+          <p class="thread-meta"></p>
+          <a class="thread-read-link" href="#">查看详情</a>
+        </div>
+      </article>
+    </template>
+
+    <template id="recent-update-template">
+      <a class="recent-update-item" href="#">
+        <div class="recent-update-main">
+          <strong class="recent-update-title"></strong>
+          <p class="recent-update-meta"></p>
+        </div>
+        <span class="recent-update-time"></span>
+      </a>
+    </template>
+
+    <template id="writing-progress-template">
+      <article class="writing-progress-item">
+        <div class="writing-progress-main">
+          <strong class="writing-progress-date"></strong>
+          <p class="writing-progress-meta"></p>
+        </div>
+        <span class="writing-progress-words"></span>
+      </article>
+    </template>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

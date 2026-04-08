@@ -1,0 +1,10 @@
+{
+  "name": "love-text-site",
+  "version": "1.0.0",
+  "description": "A personal text upload website built with Node.js core modules.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "license": "MIT"
+}
