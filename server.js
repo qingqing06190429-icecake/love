@@ -22,6 +22,8 @@ const SESSION_COOKIE_NAME = "lyra_admin_session";
 const SESSION_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "change-this-password";
 const USING_DEFAULT_PASSWORD = !process.env.ADMIN_PASSWORD;
+const REMOTE_ADMIN_ENABLED = process.env.ENABLE_REMOTE_ADMIN === "true";
+const ADMIN_UI_ENABLED = process.env.RENDER !== "true" || REMOTE_ADMIN_ENABLED;
 
 const CONTENT_TYPES = {
   ".html": "text/html; charset=utf-8",
@@ -636,6 +638,11 @@ function clearSessionCookie() {
 }
 
 function requireAdmin(req, res) {
+  if (!ADMIN_UI_ENABLED) {
+    sendText(res, 404, "Not Found");
+    return null;
+  }
+
   const auth = getAuthenticatedSession(req);
   if (!auth) {
     sendJson(res, 401, { error: "请先登录后台。" });
@@ -651,6 +658,10 @@ async function serveStatic(req, res) {
   if (relativePath === "/") {
     relativePath = "/index.html";
   } else if (relativePath === "/admin") {
+    if (!ADMIN_UI_ENABLED) {
+      sendText(res, 404, "Not Found");
+      return;
+    }
     relativePath = "/admin.html";
   } else if (relativePath.startsWith("/article/") && relativePath.length > "/article/".length) {
     relativePath = "/article.html";
@@ -764,6 +775,11 @@ async function handleRequest(req, res) {
   }
 
   if (req.method === "GET" && pathname === "/api/admin/session") {
+    if (!ADMIN_UI_ENABLED) {
+      sendText(res, 404, "Not Found");
+      return;
+    }
+
     sendJson(res, 200, {
       authenticated: Boolean(getAuthenticatedSession(req)),
       usingDefaultPassword: USING_DEFAULT_PASSWORD
@@ -772,6 +788,11 @@ async function handleRequest(req, res) {
   }
 
   if (req.method === "POST" && pathname === "/api/admin/login") {
+    if (!ADMIN_UI_ENABLED) {
+      sendText(res, 404, "Not Found");
+      return;
+    }
+
     try {
       const raw = await readBody(req);
       const payload = JSON.parse(raw || "{}");
@@ -798,6 +819,11 @@ async function handleRequest(req, res) {
   }
 
   if (req.method === "POST" && pathname === "/api/admin/logout") {
+    if (!ADMIN_UI_ENABLED) {
+      sendText(res, 404, "Not Found");
+      return;
+    }
+
     const auth = getAuthenticatedSession(req);
     if (auth) {
       sessions.delete(auth.token);
