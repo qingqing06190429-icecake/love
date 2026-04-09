@@ -977,8 +977,215 @@ button:focus,
     padding-top: 2rem;
   }
 
+  .hero {
+    gap: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
   .hero h1 {
     max-width: 100%;
+    font-size: clamp(2.2rem, 11vw, 3.2rem);
+  }
+
+  .eyebrow {
+    margin-bottom: 0.7rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+  }
+
+  .hero-copy,
+  .panel-head p,
+  .thread-excerpt,
+  .article-excerpt,
+  .article-meta,
+  .thread-meta,
+  .recent-update-meta,
+  .writing-progress-meta,
+  .progress-meta {
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+
+  .hero-stats h2,
+  .panel-head h2 {
+    font-size: 1.55rem;
+  }
+
+  .panel,
+  .board-section,
+  .article-card,
+  .writing-progress-item,
+  .progress-item {
+    border-radius: 20px;
+  }
+
+  .panel-compact,
+  .board-hall,
+  .recent-updates-panel,
+  .writing-progress-panel,
+  .search-panel,
+  .forum-feed,
+  .admin-login,
+  .admin-composer,
+  .admin-library,
+  .progress-manager,
+  .article-detail-panel,
+  .detail-sidebar,
+  .sidebar {
+    padding: 1rem;
+  }
+
+  .board-grid,
+  .thread-list,
+  .board-sections,
+  .recent-updates-list,
+  .writing-progress-list,
+  .progress-list,
+  .articles-list,
+  .related-list {
+    gap: 0.7rem;
+  }
+
+  .board-card,
+  .recent-update-item,
+  .writing-progress-item,
+  .progress-item,
+  .thread-row {
+    padding: 0.85rem 0.9rem;
+  }
+
+  .board-card-title,
+  .board-section-title,
+  .thread-title-link,
+  .article-title {
+    font-size: 1.2rem;
+  }
+
+  .thread-title-link {
+    margin-top: 0.6rem;
+  }
+
+  .stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+    margin-top: 0.85rem;
+  }
+
+  .stat-grid div {
+    padding: 0.8rem;
+  }
+
+  .stat-grid div:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .stat-number {
+    font-size: 1.6rem;
+  }
+
+  .forum-layout {
+    gap: 1rem;
+  }
+
+  .forum-feed {
+    order: 1;
+  }
+
+  .sidebar {
+    order: 2;
+  }
+
+  .filter-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+  }
+
+  .board-filter {
+    min-height: 2.7rem;
+    padding: 0.7rem 0.85rem;
+    font-size: 0.92rem;
+  }
+
+  .board-card-top,
+  .board-section-head {
+    gap: 0.55rem;
+  }
+
+  .board-card-meta,
+  .board-card-latest,
+  .board-section-meta {
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  .thread-board,
+  .thread-category,
+  .status-chip,
+  .tag-chip {
+    font-size: 0.8rem;
+  }
+
+  .thread-row {
+    gap: 0.75rem;
+  }
+
+  .thread-side {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .recent-update-title,
+  .writing-progress-date,
+  .progress-date {
+    font-size: 0.98rem;
+  }
+
+  .writing-progress-words,
+  .progress-words {
+    font-size: 1.15rem;
+  }
+
+  .progress-actions {
+    gap: 0.55rem;
+  }
+
+  input[type="text"],
+  input[type="search"],
+  input[type="date"],
+  input[type="number"],
+  input[type="password"],
+  input[type="file"] {
+    min-height: 2.8rem;
+    padding: 0.75rem 0.9rem;
+    font-size: 0.95rem;
+  }
+
+  textarea {
+    min-height: 8.5rem;
+    padding: 0.8rem 0.9rem;
+    font-size: 0.95rem;
+  }
+
+  .hero-link,
+  #login-button,
+  #progress-submit-button,
+  #submit-button,
+  .publish-toggle,
+  .action-link,
+  .back-link,
+  .secondary-button,
+  .article-toggle,
+  .danger-button,
+  .thread-read-link {
+    min-height: 2.7rem;
+    padding: 0.72rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .card-actions > *,
+  .action-row > * {
+    min-width: 0;
   }
 
   .hero-link,
@@ -993,5 +1200,63 @@ button:focus,
   .danger-button,
   .thread-read-link {
     width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .page-shell {
+    width: min(100% - 0.7rem, 100%);
+    padding-top: 1.4rem;
+    padding-bottom: 2rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.9rem, 12vw, 2.7rem);
+  }
+
+  .hero-copy,
+  .panel-head p,
+  .thread-excerpt,
+  .article-excerpt {
+    font-size: 0.88rem;
+  }
+
+  .hero-stats h2,
+  .panel-head h2 {
+    font-size: 1.35rem;
+  }
+
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-grid div:last-child {
+    grid-column: auto;
+  }
+
+  .board-card-title,
+  .board-section-title,
+  .thread-title-link,
+  .article-title {
+    font-size: 1.08rem;
+  }
+
+  .filter-list {
+    grid-template-columns: 1fr;
+  }
+
+  .board-filter {
+    font-size: 0.88rem;
+  }
+
+  .stat-number {
+    font-size: 1.45rem;
+  }
+
+  .thread-board,
+  .thread-category,
+  .status-chip,
+  .tag-chip {
+    font-size: 0.76rem;
   }
 }
