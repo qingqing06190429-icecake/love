@@ -12,6 +12,7 @@ const titleInput = document.querySelector("#title-input");
 const fandomInput = document.querySelector("#fandom-input");
 const cpInput = document.querySelector("#cp-input");
 const tagsInput = document.querySelector("#tags-input");
+const publishedAtInput = document.querySelector("#published-at-input");
 const excerptInput = document.querySelector("#excerpt-input");
 const contentInput = document.querySelector("#content-input");
 const fileInput = document.querySelector("#file-input");
@@ -58,6 +59,21 @@ function formatDayLabel(value) {
 
 function formatWords(value) {
   return `${Number(value || 0).toLocaleString("zh-CN")} 字`;
+}
+
+function toDateTimeLocalValue(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return "";
+  }
+
+  const offsetMs = date.getTimezoneOffset() * 60 * 1000;
+  const localDate = new Date(date.getTime() - offsetMs);
+  return localDate.toISOString().slice(0, 16);
+}
+
+function nowDateTimeLocalValue() {
+  return toDateTimeLocalValue(new Date().toISOString());
 }
 
 function setStatus(target, message, isError = false) {
@@ -109,6 +125,7 @@ function resetComposer() {
   composerCopy.textContent = "可以直接写文，也可以先导入 txt 文件，再填写原作、CP 和 tag。";
   submitButton.textContent = "保存文章";
   cancelEditButton.hidden = true;
+  publishedAtInput.value = nowDateTimeLocalValue();
   updateCount();
 }
 
@@ -123,6 +140,7 @@ function fillComposer(article) {
   fandomInput.value = article.fandom;
   cpInput.value = article.cp;
   tagsInput.value = article.tags.join(", ");
+  publishedAtInput.value = toDateTimeLocalValue(article.publishedAt);
   excerptInput.value = article.excerpt;
   contentInput.value = article.content;
   publishedInput.checked = article.published;
@@ -258,7 +276,7 @@ function createAdminArticleCard(article) {
   statusChip.textContent = article.published ? "已公开" : "草稿";
   statusChip.classList.toggle("is-published", article.published);
   title.textContent = article.title;
-  meta.textContent = `${formatDate(article.createdAt)} 创建 · ${formatDate(article.updatedAt)} 更新`;
+  meta.textContent = `发布于 ${formatDate(article.publishedAt)} · ${formatDate(article.updatedAt)} 更新`;
   excerpt.textContent = article.excerpt;
   tagList.replaceWith(createTagList(article.tags, "tag-list admin-tag-list"));
   content.textContent = article.content;
@@ -481,6 +499,7 @@ async function handleArticleSubmit(event) {
         fandom: fandomInput.value.trim(),
         cp: cpInput.value.trim(),
         tags: tagsInput.value.trim(),
+        publishedAt: publishedAtInput.value,
         excerpt: excerptInput.value.trim(),
         content,
         sourceName: currentSourceName,

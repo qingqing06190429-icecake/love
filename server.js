@@ -10,12 +10,12 @@ const DATA_DIR = path.join(ROOT_DIR, "data");
 const PUBLIC_DIR = path.join(ROOT_DIR, "public");
 const ARTICLES_DIR = path.join(ROOT_DIR, "data", "entries");
 const DAILY_PROGRESS_FILE = path.join(DATA_DIR, "daily-progress.json");
-const MAX_BODY_BYTES = 256 * 1024;
+const MAX_BODY_BYTES = 2 * 1024 * 1024;
 const MAX_TITLE_LENGTH = 100;
 const MAX_FANDOM_LENGTH = 40;
 const MAX_CP_LENGTH = 48;
 const MAX_EXCERPT_LENGTH = 220;
-const MAX_CONTENT_LENGTH = 100000;
+const MAX_CONTENT_LENGTH = 200000;
 const MAX_TAG_LENGTH = 24;
 const MAX_TAG_COUNT = 12;
 const SESSION_COOKIE_NAME = "lyra_admin_session";
@@ -104,6 +104,20 @@ function parseWordCount(value) {
     throw new Error("码字数必须是大于或等于 0 的整数。");
   }
   return words;
+}
+
+function normalizePublishedAt(value) {
+  const raw = String(value || "").trim();
+  if (!raw) {
+    return "";
+  }
+
+  const date = new Date(raw);
+  if (Number.isNaN(date.getTime())) {
+    return "";
+  }
+
+  return date.toISOString();
 }
 
 function matchesSearch(article, query) {
@@ -224,6 +238,7 @@ function normalizeArticle(rawArticle, filePath) {
   const content = String(rawArticle.content || "").trim();
   const createdAt = rawArticle.createdAt || new Date().toISOString();
   const updatedAt = rawArticle.updatedAt || createdAt;
+  const publishedAt = normalizePublishedAt(rawArticle.publishedAt) || createdAt;
   const fandom =
     trimTo(rawArticle.fandom, MAX_FANDOM_LENGTH) ||
     trimTo(rawArticle.board, MAX_FANDOM_LENGTH) ||
@@ -245,6 +260,7 @@ function normalizeArticle(rawArticle, filePath) {
     excerpt: trimTo(rawArticle.excerpt, MAX_EXCERPT_LENGTH) || buildPreview(content, MAX_EXCERPT_LENGTH),
     content,
     published: rawArticle.published === undefined ? true : Boolean(rawArticle.published),
+    publishedAt,
     sourceName: trimTo(rawArticle.sourceName, 120) || "后台手动创建",
     createdAt,
     updatedAt,
@@ -262,6 +278,7 @@ function toPublicListView(article) {
     cp: article.cp,
     tags: article.tags,
     excerpt: article.excerpt,
+    publishedAt: article.publishedAt,
     createdAt: article.createdAt,
     updatedAt: article.updatedAt
   };
@@ -287,6 +304,7 @@ function toAdminArticleView(article) {
     content: article.content,
     sourceName: article.sourceName,
     published: article.published,
+    publishedAt: article.publishedAt,
     createdAt: article.createdAt,
     updatedAt: article.updatedAt
   };
@@ -473,6 +491,7 @@ async function writeArticleFile(article, filePath) {
     excerpt: article.excerpt,
     content: article.content,
     published: article.published,
+    publishedAt: article.publishedAt,
     sourceName: article.sourceName,
     createdAt: article.createdAt,
     updatedAt: article.updatedAt
@@ -500,10 +519,13 @@ function prepareArticleData(payload, existingArticle = null) {
     trimTo(payload.excerpt, MAX_EXCERPT_LENGTH) || buildPreview(content, MAX_EXCERPT_LENGTH);
   const sourceName =
     trimTo(payload.sourceName, 120) || existingArticle?.sourceName || "后台手动创建";
+  const publishedAtInput = normalizePublishedAt(payload.publishedAt);
   const published =
     payload.published === undefined
       ? Boolean(existingArticle?.published)
       : parseBoolean(payload.published, Boolean(existingArticle?.published));
+  const publishedAt =
+    publishedAtInput || existingArticle?.publishedAt || new Date().toISOString();
 
   if (!content) {
     throw new Error("文章内容不能为空。");
@@ -522,7 +544,8 @@ function prepareArticleData(payload, existingArticle = null) {
     excerpt,
     content,
     sourceName,
-    published
+    published,
+    publishedAt
   };
 }
 

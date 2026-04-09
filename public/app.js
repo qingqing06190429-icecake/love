@@ -292,7 +292,7 @@ function createStoryRow(article) {
   titleLink.href = detailUrl;
   excerpt.textContent = article.excerpt;
   tags.replaceWith(createTagList(article.tags, "tag-list thread-tags"));
-  meta.textContent = `发布 ${formatDate(article.createdAt)} · 更新 ${formatDate(article.updatedAt)}`;
+  meta.textContent = `发布 ${formatDate(article.publishedAt)} · 更新 ${formatDate(article.updatedAt)}`;
   readLink.href = detailUrl;
 
   return fragment;

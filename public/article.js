@@ -107,7 +107,7 @@ async function loadArticle() {
     detailCategory.textContent = article.fandom;
     detailTags.replaceWith(createTagList(article.tags, "tag-list detail-tags"));
     detailTitle.textContent = article.title;
-    detailMeta.textContent = `发布于 ${formatDate(article.createdAt)} · 最近更新 ${formatDate(article.updatedAt)}`;
+    detailMeta.textContent = `发布于 ${formatDate(article.publishedAt)} · 最近更新 ${formatDate(article.updatedAt)}`;
     detailExcerpt.textContent = article.excerpt;
     detailContent.textContent = article.content;
     renderRelatedArticles(relatedArticles || [], article.cp || "未填写 CP");
